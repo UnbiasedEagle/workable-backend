@@ -2,10 +2,18 @@ import jwt from 'jsonwebtoken';
 import { UnAuthenticatedError } from '../errors/index.js';
 
 const auth = async (req, res, next) => {
-  const token = req.cookies.token;
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    throw new UnAuthenticatedError('Authentication Invalid');
+  }
+
+  const token = authHeader.split(' ')[1];
 
   if (!token) {
-    throw new UnAuthenticatedError('Authentication Invalid');
+    return res.status(401).json({
+      errors: [{ msg: 'Unauthorized, invalid token' }],
+    });
   }
 
   try {
