@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import xss from 'xss-clean';
 import mongoSanitize from 'express-mongo-sanitize';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app = express();
 import 'express-async-errors';
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(express.json());
+app.use(cors());
 app.use(xss());
 app.use(helmet());
 app.use(mongoSanitize());
